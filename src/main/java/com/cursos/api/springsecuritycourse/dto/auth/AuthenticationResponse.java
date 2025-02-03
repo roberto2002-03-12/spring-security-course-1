@@ -1,4 +1,4 @@
-package com.cursos.api.springsecuritycourse.dto;
+package com.cursos.api.springsecuritycourse.dto.auth;
 
 import java.io.Serializable;
 
