@@ -45,7 +45,7 @@ public class JwtService {
             .issuedAt(issuedAt)
             .expiration(expiration)
             .claims(extraClaims)
-            .signWith(generateKey())
+            .signWith(generateKey()) // el algoritmo será declarado de manera automatica según la longitud de la clave secreta
             .compact();
 
         return jwt;
