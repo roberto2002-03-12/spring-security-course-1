@@ -4,17 +4,18 @@ import com.cursos.api.springsecuritycourse.dto.RegisteredUser;
 import com.cursos.api.springsecuritycourse.dto.SaveUser;
 import com.cursos.api.springsecuritycourse.dto.auth.AuthenticationRequest;
 import com.cursos.api.springsecuritycourse.dto.auth.AuthenticationResponse;
+import com.cursos.api.springsecuritycourse.dto.auth.ProfileDetailsResponse;
 import com.cursos.api.springsecuritycourse.persistence.entity.User;
 import com.cursos.api.springsecuritycourse.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +76,13 @@ public class AuthenticationService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public ProfileDetailsResponse findLoggedInUser() {
+        UsernamePasswordAuthenticationToken auth =
+                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String username = (String) auth.getPrincipal();
+        UserDetails user = userService.findOneByUsername(username);
+        return ProfileDetailsResponse.userDetailsToDto((User) user);
     }
 }
