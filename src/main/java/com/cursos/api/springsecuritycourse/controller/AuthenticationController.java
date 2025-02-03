@@ -6,9 +6,7 @@ import com.cursos.api.springsecuritycourse.service.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -17,6 +15,15 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @GetMapping("/validate")
+    public ResponseEntity<Boolean> validate(
+            @RequestParam(name = "token", required = true) String token
+    ) {
+        boolean isTokenValid = authenticationService.validateToken(token);
+        return ResponseEntity.ok(isTokenValid);
+    }
+
+    @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody @Valid AuthenticationRequest authenticationRequest
     ) {

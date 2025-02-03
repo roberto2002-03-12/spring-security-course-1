@@ -1,8 +1,6 @@
 package com.cursos.api.springsecuritycourse.service.auth;
 
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -44,5 +42,18 @@ public class JwtService {
 
         // byte[] key = SECRET_KEY.getBytes();
         return Keys.hmacShaKeyFor(passwordDecoded);
+    }
+
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder() // extraer el payload y pasarlo a un objeto de tipo claims
+                .setSigningKey(generateKey()) // definir la clave que se utiliza para firmar
+                .build() // Crear instancia JwtParser
+                .parseClaimsJws(token) // extraer los claims del jwt con un token con firma
+                // parseClaimsJwt: extraer sin firma
+                .getBody(); // obtener objeto
     }
 }

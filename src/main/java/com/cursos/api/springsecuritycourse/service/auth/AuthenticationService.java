@@ -67,4 +67,13 @@ public class AuthenticationService {
 
         return authRes;
     }
+
+    public boolean validateToken(String token) {
+        try {
+            jwtService.extractUsername(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
